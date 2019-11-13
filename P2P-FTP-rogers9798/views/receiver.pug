@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+html
+  head
+    title Recipient :: Sending a file without saving to the server.
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    #uploadbox
+      if (name)
+        h2 Receiving a file :
+        a(href=`/file/get/${token}`) Upload file !{name}
+      else
+        h2 File not found...
