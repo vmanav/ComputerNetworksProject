@@ -1,4 +1,4 @@
-doctype 5
+<!DOCTYPE html>
 html
   head
     title Recipient :: Sending a file without saving to the server.
@@ -7,6 +7,6 @@ html
     #uploadbox
       if (name)
         h2 Receiving a file :
-        a(href='/file/get/#{token}') Upload file !{name}
+        a(href=`/file/get/${token}`) Upload file !{name}
       else
         h2 File not found...

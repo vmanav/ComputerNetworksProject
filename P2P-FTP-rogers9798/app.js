@@ -5,7 +5,7 @@ var server = app.listen(8080)
 var io = require('socket.io').listen(server)
 var files = {};
 
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
