@@ -13,6 +13,7 @@ navigator.webkitGetUserMedia({
     })
 
     peer.on('signal', function (data) {
+        alert("signal event hua")
         document.getElementById('yourId').value = JSON.stringify(data)
     })
 
@@ -21,14 +22,14 @@ navigator.webkitGetUserMedia({
         peer.signal(otherId)
     })
 
-    document.getElementById('send').addEventListener('click', function () {
-        var yourMessage = document.getElementById('yourMessage').value
-        peer.send(yourMessage)
-    })
+    // document.getElementById('send').addEventListener('click', function () {
+    //     var yourMessage = document.getElementById('yourMessage').value
+    //     peer.send(yourMessage)
+    // })
 
-    peer.on('data', function (data) {
-        document.getElementById('messages').textContent += data + '\n'
-    })
+    // peer.on('data', function (data) {
+    //     document.getElementById('messages').textContent += data + '\n'
+    // })
 
     peer.on('stream', function (data) {
         var video = document.createElement('video')
