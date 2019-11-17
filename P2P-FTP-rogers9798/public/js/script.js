@@ -25,7 +25,7 @@ $(function(){
 
 socket.on('url', function (d){
   token = d.token;
-  var link = 'http://'+window.location.hostname+(location.port?':'+location.port:'')+'/get/'+d.token;
+  var link = 'http://'+window.location.hostname+(location.port?':'+location.port:'')+'/p2pfileTransfer/get/'+d.token;
   $('#uploadarea').html('<span>File Download Link: <a href="'+link+'" target="_blank">'+link+'</a></span>');
 });
 
@@ -33,7 +33,7 @@ socket.on('start', function (d){
   if (token == d.token) {
     $('#uploadarea')
       .empty()
-      .append($('<span/>').attr('id','NameArea').text('Dispatch '+selectedFile.name))
+      .append($('<span/>').attr('id','NameArea').text('Dispatched file : '+selectedFile.name))
       .append($('<div/>').attr('id','progressContainer').append($('<div/>').attr('id','progressBar')))
       .append($('<span/>').attr('id','percent').text('0%'))
       .append('<span id="Uploaded"> - <span id="MB">0</span>/'+Math.round(selectedFile.size/1048576)+'MB</span>');

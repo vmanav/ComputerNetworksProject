@@ -1,28 +1,31 @@
 var express = require('express')
 var crypto = require('crypto')
 var app = express()
-var server = app.listen(8080)
+var server = app.listen(8080,()=>{console.log('Server started at port 8080');})
 var io = require('socket.io').listen(server)
 var files = {};
 
 app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
+app.get('/p2pfileTransfer', function(req, res){
   res.render('sender', {});
 });
 
 
-app.get('/get/:secure', function(req, res){
+app.get('/p2pfileTransfer/get/:secure', function(req, res){
+
   if (files[req.params.secure]) {
     res.render('receiver', {name:files[req.params.secure].name,token:req.params.secure});
   } else {
     res.render('receiver', {name:0});
   }
+
 });
 
 
-app.get('/file/get/:secure', function(req, res){
+app.get('/p2pfileTransfer/file/get/:secure', function(req, res){
+
   if (files[req.params.secure]) {
     io.sockets.emit('start', {token:req.params.secure});
     io.sockets.emit('moreData', {place:0, percent:0, token:req.params.secure});
@@ -41,8 +44,10 @@ app.get('/file/get/:secure', function(req, res){
         delete files[req.params.secure];
       }
     }, 1000);
-  } else {
-    res.redirect('/get/file-not-found')
+  } 
+  
+  else {
+    res.redirect('/p2pfileTransfer/get/file-not-found')
   }
 });
 
