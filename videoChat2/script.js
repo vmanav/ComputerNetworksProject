@@ -57,8 +57,7 @@ $(() => {
             // console.log(JSON.stringify(data))
             var yourIdStringified = JSON.stringify(data);
             yourId.val(yourIdStringified)
-            console.log("generated ypur unique id ->", yourIdStringified)
-
+            console.log("generated ypur unique id ->", yourIdStringified)   
 
         })
 

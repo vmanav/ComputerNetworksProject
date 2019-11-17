@@ -22,21 +22,22 @@ navigator.webkitGetUserMedia({
         peer.signal(otherId)
     })
 
-    // document.getElementById('send').addEventListener('click', function () {
-    //     var yourMessage = document.getElementById('yourMessage').value
-    //     peer.send(yourMessage)
-    // })
+    document.getElementById('send').addEventListener('click', function () {
+        var yourMessage = document.getElementById('yourMessage').value
+        console.log("sending ->", yourMessage)
+        peer.send(yourMessage)
+    })
 
-    // peer.on('data', function (data) {
-    //     document.getElementById('messages').textContent += data + '\n'
-    // })
+    peer.on('data', function (data) {
+        document.getElementById('messages').textContent += data + '\n'
+    })
 
     peer.on('stream', function (data) {
         var video = document.createElement('video')
         document.body.appendChild(video)
 
         // video.src = window.URL.createObjectURL(stream)
-        video.srcObject=stream;
+        video.srcObject = stream;
         video.play()
     })
 
