@@ -21,6 +21,8 @@ $(() => {
     let loginDiv = $('#loginDiv');
     let userList = $('#userList');
     let myUsername = $('#myUsername');
+    let vChatButtton = $('#vChatButtton');
+    let vChatWindow = $('#vChatWindow');
 
     // Creating a new Peer
     var peer = new Peer({
@@ -58,20 +60,18 @@ $(() => {
             peerId: myId.text()
         })
 
-
-
         socket.on('alertAllAboutNewUser', (data) => {
             console.log("Data is -->", data);
             console.log(data.list)
             refreshUserList(data.list)
         })
 
+        // peer.on('disconnected', function () {
+        // });
 
-        peer.on('disconnected', function () {
-
-        });
 
     })
+
     // Error Handling
     peer.on('error', function (err) {
         console.log("ERROR ->", err);
@@ -86,7 +86,6 @@ $(() => {
         console.log("connectionObject", connectionObject)
         console.log("Peer ID: " + connectionObject.peer + " , tried Connectiong You.")
 
-
         connectionObject.on('open', function () {
 
             // Receive Messages
@@ -98,7 +97,6 @@ $(() => {
         });
 
     });
-
 
 
     // Clikcing on the Connect Button
@@ -127,17 +125,78 @@ $(() => {
                 }
 
                 updatedTextToSend = myUsername.text() + " : " + textToSend;
-                msg.val("");
 
                 // send to other users
                 conn.send(updatedTextToSend);
 
                 // Also add at your screen
                 chatList.append(`<li style="text-align: right;">${textToSend}</li>`);
+
+                msg.val("");
             })
         });
 
     });
+
+    // Recieving a call
+    peer.on('call', function (call) {
+        // Answer the call, providing our mediaStream
+        console.log("inside Recieving Call ")
+
+        // make videoChat visible
+        vChatWindow.show();
+        call.answer();
+
+        call.on('stream', function (stream) {
+            // `stream` is the MediaStream of the remote peer.
+            // Here you'd add it to an HTML video/canvas element.
+
+            console.log("inside on 'stream'---")
+
+            // attach 
+            var video = document.getElementById('vChat')
+            video.srcObject = stream;
+            video.play()
+
+        });
+
+    });
+
+
+    vChatButtton.click(() => {
+        console.log("Inside VchatButton.Click()");
+
+        // make videoChat visible
+        vChatWindow.show();
+
+        navigator.webkitGetUserMedia({
+            video: true,
+            audio: true
+        }, function (stream) {
+
+            destPeerIDValue = destPeerID.val();
+            if (destPeerIDValue == "") {
+                alert("Please Provide a PeerID.")
+                vChatWindow.hide();
+                return;
+            }
+            var call = peer.call(destPeerIDValue, stream);
+            if (!call) {
+                alert("Please Provide a VALID PeerID.");
+                vChatWindow.hide();
+                return
+            }
+
+            // attach your own stream
+            var video = document.getElementById('vChatMyStream')
+            video.srcObject = stream;
+            video.play()
+
+        }, function (err) {
+            console.log("Error ->", err)
+            // console.log(err)
+        })
+    })
 
 
 
