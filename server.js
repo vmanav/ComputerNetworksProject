@@ -48,6 +48,48 @@ peerserver.on('connection', (client) => {
 });
 
 
+// Old Code ->
+
+
+// io.on('connection', (socket) => {
+//     console.log("Connection Established :", socket.id)
+
+//     // console.log("Type of socket.id -->", typeof(socket.id)) <= string
+//     // When the connection is made succesfully
+//     socket.emit('connected')
+
+//     socket.on('addUser', (data) => {
+//         console.log(data)
+//         let obj = {
+//             username: data.username,
+//             peerId: data.peerId
+//         }
+//         console.log("Object at serevr ->", obj)
+//         listOfUsers.push(obj)
+//         // usersockets[data.user] = socket.id
+//         // // console.log(typeof (usersockets));   console.log(usersockets)
+
+
+//         io.emit('alertAllAboutNewUser', {
+//             list: listOfUsers
+//         })
+//     })
+
+//     socket.on('disconnect', (reason) => {
+//         let username = null;
+//         console.log('user disconnected, socketID : ', socket.id);
+
+//         io.emit('jaRhahu', {
+//             disconnect: true
+//         })
+
+//     });
+
+// })
+
+
+// New Code from Peerchat Application ->
+
 
 io.on('connection', (socket) => {
     console.log("Connection Established :", socket.id)
@@ -60,7 +102,8 @@ io.on('connection', (socket) => {
         console.log(data)
         let obj = {
             username: data.username,
-            peerId: data.peerId
+            peerId: data.peerId,
+            socketId: socket.id     // added sccket.id field in a listOfUsers object.
         }
         console.log("Object at serevr ->", obj)
         listOfUsers.push(obj)
@@ -73,48 +116,19 @@ io.on('connection', (socket) => {
         })
     })
 
-    // socket.on("send_chat", (data) => {
 
-    //     if (data.recipient == null) {
-    //         // RCP is NULL, NORMAL MSSG
-    //         io.emit("recieve_chat", {
-    //             message: data.message,
-    //             username: data.username,
-    //             private: false
-    //         })
-
-    //     }
-    //     else {
-    //         // RCP is not NULL, PVT MSG
-    //         let rcpSocket = usersockets[data.recipient]
-
-    //         //  when no user exists for private mssg
-    //         if (typeof (rcpSocket) == "undefined") {
-
-    //             console.log("No such user Found")
-    //             io.to(usersockets[data.username]).emit("recieve_chat", {
-    //                 recipient: data.recipient
-    //             })
-    //             return;
-    //         }
-
-    //         // PRIVATE MSSG
-    //         io.to(rcpSocket).emit("recieve_chat", {
-    //             message: data.message,
-    //             username: data.username,
-    //             private: true
-    //         })
-    //     }
-    // })
-
-
-
+    // When a scket/ Peer is being disconnected
     socket.on('disconnect', (reason) => {
-        let username = null;
         console.log('user disconnected, socketID : ', socket.id);
 
-        io.emit('jaRhahu', {
-            disconnect: true
+        // joGyaUskiId = socket.id;
+
+        listOfUsers = listOfUsers.filter(obj => obj.socketId == socket.id)
+        console.log(listOfUsers)
+
+        //    remove user from listOfUsers and the emit alert all
+        io.emit('alertAllAboutNewUser', {
+            list: listOfUsers
         })
 
     });
