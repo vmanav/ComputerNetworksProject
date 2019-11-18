@@ -9,6 +9,7 @@ listOfUsers = [];
 // configuring Handlebars
 app.set('view engine', 'hbs');
 
+// Congfiguring port on heroku
 const PORT = process.env.PORT || 3000;
 
 

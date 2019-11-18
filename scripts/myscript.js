@@ -31,8 +31,15 @@ $(() => {
         path: '/p2pServer',
     });
 
-    // var conn = peer.connect('3h75nadj32n00000')
-    // conn.send('hello')
+
+    // // configuring PeerJSServer on Heroku
+    // // Creating a new Peer
+    // var peer = new Peer({
+    //     secure: true,
+    //     host: 'the-peer-chat.herokuapp.com',
+    //     port: 443,
+    //     path: '/p2pServer',
+    // });
 
     // When a new Peer is Created
     peer.on('open', function (id) {
@@ -66,10 +73,7 @@ $(() => {
             refreshUserList(data.list)
         })
 
-        // peer.on('disconnected', function () {
-        // });
-
-
+        
     })
 
     // Error Handling
