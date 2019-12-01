@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:8080/');
+var socket = io();
 var FReader, token, selectedFile;
 
 $(function(){
